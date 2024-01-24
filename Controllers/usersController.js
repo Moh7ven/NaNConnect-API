@@ -1,4 +1,4 @@
-import bcrypt, { hash } from "bcrypt";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Users from "../models/Users.js";
 
@@ -12,7 +12,7 @@ export const signup = (req, res) => {
         prenomUser: req.body.prenomUser,
         username: req.body.username,
         emailUser: req.body.emailUser,
-        passwordUser: req.body.passwordUser,
+        passwordUser: hash,
         dateNaissUser: req.body.dateNaissUser,
         promotionUser: req.body.promotionUser,
         matricule: req.body.matricule,

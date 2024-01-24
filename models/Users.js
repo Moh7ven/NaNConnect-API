@@ -26,7 +26,7 @@ let userSchema = mongoose.Schema({
   promotionUser: { type: String, required: true },
   matricule: { type: String, required: true },
   adresseUser: { type: String, required: true },
-  telUser: { type: String, required: true },
+  telUser: { type: Number, required: true },
 });
 
 userSchema.plugin(uniqueValidator);
