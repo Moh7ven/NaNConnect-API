@@ -35,3 +35,30 @@ export const signup = (req, res) => {
       res.status(500).json({ error });
     });
 };
+
+export const login = (req, res) => {
+  Users.findOne({ emailUser: req.body.emailUser })
+    .then((user) => {
+      if (!user) {
+        return res
+          .status(401)
+          .json({ error: "Email ou Mot de passe incorrect !" });
+      }
+      bcrypt
+        .compare(req.body.passwordUser, user.password)
+        .then((valid) => {
+          if (!valid) {
+            return res
+              .status(401)
+              .json({ error: "Email ou Mot de passe incorrect !" });
+          }
+          res.status(200).json({ message: "Connexion reussie" });
+        })
+        .catch((error) => {
+          res.status(400).json({ error });
+        });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
