@@ -45,14 +45,20 @@ export const login = (req, res) => {
           .json({ error: "Email ou Mot de passe incorrect !" });
       }
       bcrypt
-        .compare(req.body.passwordUser, user.password)
+        .compare(req.body.passwordUser, user.passwordUser)
         .then((valid) => {
           if (!valid) {
             return res
               .status(401)
               .json({ error: "Email ou Mot de passe incorrect !" });
           }
-          res.status(200).json({ message: "Connexion reussie" });
+          res.status(200).json({
+            userId: user._id,
+            token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
+              expiresIn: "24h",
+            }),
+            message: "Connexion reussie",
+          });
         })
         .catch((error) => {
           res.status(400).json({ error });
