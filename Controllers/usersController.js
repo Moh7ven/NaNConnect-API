@@ -68,3 +68,10 @@ export const login = (req, res) => {
       res.status(500).json({ error });
     });
 };
+
+//FONCTION POUR RECUPÉRER TOUS LES UTILISATEURS
+export const getAllUsers = (req, res) => {
+  Users.find()
+    .then((users) => res.status(200).json(users))
+    .catch((error) => res.status(400).json({ error }));
+};
