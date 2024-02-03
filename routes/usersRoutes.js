@@ -15,4 +15,6 @@ router.post("/login", upload.any(), login);
 //Router allusers
 router.get("/allusers", authUser, getAllUsers);
 
+
+
 export default router;
