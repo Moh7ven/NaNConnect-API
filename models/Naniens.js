@@ -13,10 +13,12 @@ let nanienSchema = mongoose.Schema({
   nanienUsername: {
     type: String,
     required: [true, "Veuillez enter un nom d'utilisateur"],
+    unique: [true, "Ce nom d'utilisateur existe déja !"],
   },
   emailNanien: {
     type: String,
     required: [true, "Veuillez entrer votre email !"],
+    unique: true,
   },
   passwordNanien: {
     type: String,

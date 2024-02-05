@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Naniens from "../models/Naniens.js";
+import nodemailer from "nodemailer";
 
 //Fonction to signup
 export const signupNanien = (req, res) => {
@@ -20,12 +21,41 @@ export const signupNanien = (req, res) => {
         telNanien: req.body.telNanien,
       });
 
+      const myEmail = "nanconnect225@gmail.com";
+
+      // Configuration du transporteur (SMTP)
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        service: "gmail",
+        auth: {
+          user: myEmail,
+          pass: "xelbckkfenxdsoau",
+        },
+      });
+
+      // Exemple d'envoi d'e-mail lors de l'inscription
+      const mailOptions = {
+        from: myEmail,
+        to: req.body.emailNanien,
+        subject: "Bienvenue sur NaNConnect",
+        html: '<h2 style="color: green">Merci de vous être inscrit sur NaNConnect. Nous sommes ravis de vous avoir parmi nous!</h2>',
+      };
+
       nanien
         .save()
         .then(() => {
           res.status(200).json({
             message: `Bravo, vous avez été bien enregistré`,
-          });
+          }),
+            transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                console.error(error);
+              } else {
+                console.log("Email envoyé : " + info.response);
+              }
+            });
         })
         .catch((error) => {
           res.status(400).json({ error });
