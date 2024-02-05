@@ -1,34 +1,34 @@
 import mongoose from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
 
-let userSchema = mongoose.Schema({
-  nomUser: {
+let nanienSchema = mongoose.Schema({
+  nomNanien: {
     type: String,
     required: [true, "Veuillez entrer votre nom !"],
   },
-  prenomUser: {
+  prenomNanien: {
     type: String,
     required: [true, "Veuillez entrer votre prenom !"],
   },
-  username: {
+  nanienUsername: {
     type: String,
     required: [true, "Veuillez enter un nom d'utilisateur"],
   },
-  emailUser: {
+  emailNanien: {
     type: String,
     required: [true, "Veuillez entrer votre email !"],
   },
-  passwordUser: {
+  passwordNanien: {
     type: String,
     required: [true, "Veuillez entrer votre mot de passe"],
   },
-  dateNaissUser: { type: String, required: true },
-  promotionUser: { type: String, required: true },
+  dateNaissNanien: { type: String, required: true },
+  promotionNanien: { type: String, required: true },
   matricule: { type: String, required: true },
-  adresseUser: { type: String, required: true },
-  telUser: { type: Number, required: true },
+  adresseNanien: { type: String, required: true },
+  telNanien: { type: Number, required: true },
 });
 
-userSchema.plugin(uniqueValidator);
+nanienSchema.plugin(uniqueValidator);
 
-export default userSchema = mongoose.model("Users", userSchema);
+export default nanienSchema = mongoose.model("Naniens", nanienSchema);

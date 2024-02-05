@@ -1,26 +1,26 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import Users from "../models/Users.js";
+import Naniens from "../models/Naniens.js";
 
 //Fonction to signup
-export const signup = (req, res) => {
+export const signupNanien = (req, res) => {
   bcrypt
-    .hash(req.body.passwordUser, 10)
+    .hash(req.body.passwordNanien, 10)
     .then((hash) => {
-      const user = new Users({
-        nomUser: req.body.nomUser,
-        prenomUser: req.body.prenomUser,
-        username: req.body.username,
-        emailUser: req.body.emailUser,
-        passwordUser: hash,
-        dateNaissUser: req.body.dateNaissUser,
-        promotionUser: req.body.promotionUser,
+      const nanien = new Naniens({
+        nomNanien: req.body.nomNanien,
+        prenomNanien: req.body.prenomNanien,
+        nanienUsername: req.body.nanienUsername,
+        emailNanien: req.body.emailNanien,
+        passwordNanien: hash,
+        dateNaissNanien: req.body.dateNaissNanien,
+        promotionNanien: req.body.promotionNanien,
         matricule: req.body.matricule,
-        adresseUser: req.body.adresseUser,
-        telUser: req.body.telUser,
+        adresseNanien: req.body.adresseNanien,
+        telNanien: req.body.telNanien,
       });
 
-      user
+      nanien
         .save()
         .then(() => {
           res.status(200).json({
@@ -36,16 +36,16 @@ export const signup = (req, res) => {
     });
 };
 
-export const login = (req, res) => {
-  Users.findOne({ emailUser: req.body.emailUser })
-    .then((user) => {
-      if (!user) {
+export const loginNanien = (req, res) => {
+  Naniens.findOne({ emailNanien: req.body.emailNanien })
+    .then((nanien) => {
+      if (!nanien) {
         return res
           .status(401)
           .json({ error: "Email ou Mot de passe incorrect !" });
       }
       bcrypt
-        .compare(req.body.passwordUser, user.passwordUser)
+        .compare(req.body.passwordNanien, nanien.passwordNanien)
         .then((valid) => {
           if (!valid) {
             return res
@@ -53,8 +53,8 @@ export const login = (req, res) => {
               .json({ error: "Email ou Mot de passe incorrect !" });
           }
           res.status(200).json({
-            userId: user._id,
-            token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
+            nanienId: nanien._id,
+            token: jwt.sign({ nanienId: nanien._id }, "RANDOM_TOKEN_SECRET", {
               expiresIn: "24h",
             }),
             message: "Connexion reussie",
@@ -70,19 +70,21 @@ export const login = (req, res) => {
 };
 
 //FONCTION POUR RECUPÉRER TOUS LES UTILISATEURS
-export const getAllUsers = (req, res) => {
-  Users.find()
-    .then((users) => res.status(200).json(users))
+export const getAllNaniens = (req, res) => {
+  Naniens.find()
+    .then((naniens) => res.status(200).json(naniens))
     .catch((error) => res.status(400).json({ error }));
 };
 
 //FONCTION POUR RECUPÉRER LES INFOS DE L'UTILISTEUR CONNECTÉ
-export const getUserConnected = (req, res) => {
-  Users.findOne({ _id: req.auth.userId }).then((user) => {
-    if (!user) {
+export const getNanienConnected = (req, res) => {
+  Naniens.findOne({ _id: req.auth.nanienId }).then((nanien) => {
+    if (!nanien) {
       return res.status(401).json({ message: "Utilisateur non-connecté" });
     }
-    const { nomUser, prenomUser, emailUser, username } = user;
-    res.status(200).json({ nomUser, prenomUser, emailUser, username });
+    const { nomNanien, prenomNanien, emailNanien, nanienUsername } = nanien;
+    res
+      .status(200)
+      .json({ nomNanien, prenomNanien, emailNanien, nanienUsername });
   });
 };
