@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
 
 // Exemple d'envoi d'e-mail lors de l'inscription
 
-export const emailSended = (toEmail) => {
+export const welcomeEmail = (toEmail) => {
   const mailOptions = {
     from: myEmail,
     to: toEmail,

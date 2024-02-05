@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Naniens from "../models/Naniens.js";
-import { emailSended } from "../services/emailService.js";
+import { welcomeEmail } from "../services/emailService.js";
 
 //Fonction to signup
 export const signupNanien = (req, res) => {
@@ -34,7 +34,7 @@ export const signupNanien = (req, res) => {
                 console.log("Email envoyé : " + info.response);
               }
             }); */
-          emailSended(req.body.emailNanien)
+          welcomeEmail(req.body.emailNanien)
             .then((info) => {
               console.log("Email envoyé : " + info.response);
             })
