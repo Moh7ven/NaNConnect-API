@@ -5,7 +5,7 @@ import {
   loginNanien,
   getNanienConnected,
   getAllNaniens,
-} from "../Controllers/naniensController.js";
+} from "../controllers/naniensController.js";
 import authUser from "../middleware/authNaniens.js";
 
 const router = express.Router();

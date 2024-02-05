@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/naniensRoutes.js";
 
@@ -8,7 +9,7 @@ dotenv.config();
 connectDB();
 const app = express();
 
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -19,7 +20,9 @@ app.use((req, res, next) => {
     "GET, POST,PUT, DELETE, PATH,OPTIONS"
   );
   next();
-});
+}); */
+
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

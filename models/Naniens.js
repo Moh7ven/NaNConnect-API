@@ -28,7 +28,11 @@ let nanienSchema = mongoose.Schema({
   promotionNanien: { type: String, required: true },
   matricule: { type: String, required: true },
   adresseNanien: { type: String, required: true },
-  telNanien: { type: Number, required: true },
+  telNanien: {
+    type: String,
+    required: true,
+    unique: [true, "Ce numéro existe déja !"],
+  },
 });
 
 nanienSchema.plugin(uniqueValidator);
