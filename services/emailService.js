@@ -28,3 +28,17 @@ export const welcomeEmail = (toEmail) => {
 
   return transporter.sendMail(mailOptions);
 };
+
+export const codeEmail = (toEmail, code) => {
+  const mailOptions = {
+    from: myEmail,
+    to: toEmail,
+    subject: "Code de validation",
+    html: `
+    <h2">Votre code de validation est : <span style="color: #fcbe24; font-weight: bold; font-size: 1.5em">${code}</span></h2>
+    
+    `,
+  };
+
+  return transporter.sendMail(mailOptions);
+};

@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/naniensRoutes.js";
+import confirmationEmailRoutes from "./routes/confirmationEmailRoutes.js";
 
 dotenv.config();
 
@@ -28,5 +29,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/naniens", userRoutes);
+app.use("/api/naniens/confirmation-email", confirmationEmailRoutes);
 
 export default app;

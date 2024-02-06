@@ -1,7 +1,11 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Naniens from "../models/Naniens.js";
-import { welcomeEmail } from "../services/emailService.js";
+import ConfirmationEmail from "../models/ConfirmationEmail.js";
+import { welcomeEmail, codeEmail } from "../services/emailService.js";
+import { generateRandomCode } from "../utils/generateRandomCode.js";
+
+const code = generateRandomCode();
 
 //Fonction to signup
 export const signupNanien = (req, res) => {
@@ -27,14 +31,22 @@ export const signupNanien = (req, res) => {
           res.status(200).json({
             message: `Bravo, vous avez été bien enregistré`,
           });
-          /* transporter.sendMail(mailOptions, (error, info) => {
-              if (error) {
-                console.error(error);
-              } else {
-                console.log("Email envoyé : " + info.response);
-              }
-            }); */
-          welcomeEmail(req.body.emailNanien)
+
+          const confirmationEmail = new ConfirmationEmail({
+            email: req.body.emailNanien,
+            code: code,
+          });
+
+          confirmationEmail
+            .save()
+            .then(() => {
+              console.log(`Email et code:  ${code} enregistrés`);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+
+          codeEmail(req.body.emailNanien, code)
             .then((info) => {
               console.log("Email envoyé : " + info.response);
             })
