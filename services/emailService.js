@@ -16,8 +16,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Exemple d'envoi d'e-mail lors de l'inscription
-
 export const welcomeEmail = (toEmail) => {
   const mailOptions = {
     from: myEmail,
@@ -35,8 +33,12 @@ export const codeEmail = (toEmail, code) => {
     to: toEmail,
     subject: "Code de validation",
     html: `
-    <h2">Votre code de validation est : <span style="color: #fcbe24; font-weight: bold; font-size: 1.5em">${code}</span></h2>
-    
+    <div>
+    <h2>Votre code de validation est : </h2>
+    <span style="color: #fcbe24; font-weight: bold; font-size: 2em; height:40px; width:200px; text-align: center; background-color:black; display:grid; place-items: center;"
+    >${code}</span
+  >
+    </div>    
     `,
   };
 

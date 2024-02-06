@@ -7,6 +7,7 @@ export const verifyCode = async (req, res) => {
     const confirmationEntry = await ConfirmationEmail.findOne({ code });
 
     if (confirmationEntry) {
+      //Delete the confirmation entry after it has been verified
       await ConfirmationEmail.findByIdAndDelete(confirmationEntry._id);
       res
         .status(200)
