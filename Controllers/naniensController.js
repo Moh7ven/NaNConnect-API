@@ -7,7 +7,7 @@ import { generateRandomCode } from "../utils/generateRandomCode.js";
 
 const code = generateRandomCode();
 
-//Fonction to signup
+//FONCTION POUR S'INSCRIRE
 export const signupNanien = (req, res) => {
   bcrypt
     .hash(req.body.passwordNanien, 10)
@@ -63,6 +63,7 @@ export const signupNanien = (req, res) => {
     });
 };
 
+//FONCTION POUR SE CONNECTER
 export const loginNanien = (req, res) => {
   Naniens.findOne({ emailNanien: req.body.emailNanien })
     .then((nanien) => {
