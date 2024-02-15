@@ -4,6 +4,7 @@ import Naniens from "../models/Naniens.js";
 import ConfirmationEmail from "../models/ConfirmationEmail.js";
 import { welcomeEmail, codeEmail } from "../services/emailService.js";
 import { generateRandomCode } from "../utils/generateRandomCode.js";
+import theDate from "../utils/generateDate.js";
 
 const code = generateRandomCode();
 
@@ -23,6 +24,7 @@ export const signupNanien = (req, res) => {
         matricule: req.body.matricule,
         adresseNanien: req.body.adresseNanien,
         telNanien: req.body.telNanien,
+        createdAtNanien: theDate(),
       });
 
       nanien

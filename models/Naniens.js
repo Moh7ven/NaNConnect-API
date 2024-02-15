@@ -33,6 +33,8 @@ let nanienSchema = mongoose.Schema({
     required: true,
     unique: [true, "Ce numéro existe déja !"],
   },
+  status: { type: Boolean, default: false },
+  createdAtNanien: { type: String, required: true },
 });
 
 nanienSchema.plugin(uniqueValidator);

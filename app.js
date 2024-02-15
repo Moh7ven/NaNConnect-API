@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/naniensRoutes.js";
 import confirmationEmailRoutes from "./routes/confirmationEmailRoutes.js";
+import theDate from "./utils/generateDate.js";
 
 dotenv.config();
 
@@ -24,6 +25,8 @@ const app = express();
 }); */
 
 app.use(cors());
+
+console.log(theDate());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
