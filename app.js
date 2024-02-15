@@ -5,6 +5,8 @@ import connectDB from "./config/db.js";
 import userRoutes from "./routes/naniensRoutes.js";
 import confirmationEmailRoutes from "./routes/confirmationEmailRoutes.js";
 import theDate from "./utils/generateDate.js";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./swaggerConfig.js";
 
 dotenv.config();
 
@@ -25,6 +27,8 @@ const app = express();
 }); */
 
 app.use(cors());
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 console.log(theDate());
 
