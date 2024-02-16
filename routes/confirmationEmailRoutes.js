@@ -7,7 +7,7 @@ const upload = multer();
 
 /**
  * @swagger
- * /api/confirmationemail/verifycode:
+ * /api/naniens/confirmation-email/verifycode:
  *   description: Vérification du code de confirmation.
  *   post:
  *     summary: Vérification du code de confirmation.

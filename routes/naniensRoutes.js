@@ -5,8 +5,9 @@ import {
   loginNanien,
   getNanienConnected,
   getAllNaniens,
-} from "../controllers/naniensController.js";
+} from "../Controllers/naniensController.js";
 import authUser from "../middleware/authNaniens.js";
+import checkEmail from "../middleware/checkEmail.js";
 
 const router = express.Router();
 const upload = multer();
