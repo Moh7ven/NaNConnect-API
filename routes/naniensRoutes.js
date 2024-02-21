@@ -29,6 +29,8 @@ const upload = multer();
  *                 type: string
  *               prenomNanien:
  *                 type: string
+ *               nanienUsername:
+ *                 type: string
  *               emailNanien:
  *                 type: string
  *                 format: email
