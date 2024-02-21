@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { verifyCode } from "../controllers/confirmationEmailController.js";
+import { verifyCode } from "../Controllers/confirmationEmailController.js";
 
 const router = express.Router();
 const upload = multer();
