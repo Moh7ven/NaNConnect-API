@@ -116,5 +116,5 @@ export const getNanienConnected = (req, res) => {
     res
       .status(200)
       .json({ nomNanien, prenomNanien, emailNanien, nanienUsername });
-  });
+  }).catch((error) => res.status(400).json({ error }));
 };

@@ -7,6 +7,7 @@ import confirmationEmailRoutes from "./routes/confirmationEmailRoutes.js";
 import theDate from "./utils/generateDate.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./swaggerConfig.js";
+import publicationsRoutes from "./routes/publicationsRoutes.js";
 
 dotenv.config();
 
@@ -37,5 +38,5 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/naniens", userRoutes);
 app.use("/api/naniens/confirmation-email", confirmationEmailRoutes);
-
+app.use("/api/naniens/publications", publicationsRoutes);
 export default app;

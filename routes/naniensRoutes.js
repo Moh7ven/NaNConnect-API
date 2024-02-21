@@ -6,7 +6,7 @@ import {
   getNanienConnected,
   getAllNaniens,
 } from "../Controllers/naniensController.js";
-import authUser from "../middleware/authNaniens.js";
+import authNaniens from "../middleware/authNaniens.js";
 import checkEmail from "../middleware/checkEmail.js";
 
 const router = express.Router();
@@ -96,7 +96,7 @@ router.post("/loginnaniens", upload.any(), loginNanien);
  *       500:
  *         description: Erreur interne du serveur.
  */
-router.get("/allnaniens", authUser, getAllNaniens);
+router.get("/allnaniens", authNaniens, getAllNaniens);
 
 /**
  * @swagger
@@ -112,6 +112,6 @@ router.get("/allnaniens", authUser, getAllNaniens);
  *       401:
  *         description: Utilisateur non-connecté.
  */
-router.get("/nanienconnected", authUser, getNanienConnected);
+router.get("/nanienconnected", authNaniens, getNanienConnected);
 
 export default router;
