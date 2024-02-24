@@ -1,5 +1,6 @@
 import ConfirmationEmail from "../models/ConfirmationEmail.js";
 
+//FONCTION POUR VERIFIER LE CODE
 export const verifyCode = async (req, res) => {
   const { code } = req.body;
 
