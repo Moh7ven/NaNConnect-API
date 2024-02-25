@@ -1,5 +1,6 @@
 import ConfirmationEmail from "../models/ConfirmationEmail.js";
 
+//FONCTION POUR VERIFIER SI L'EMAIL EST CONFIRMÉ
 export default async (req, res, next) => {
   try {
     const confirmationEmail = await ConfirmationEmail.findOne({
