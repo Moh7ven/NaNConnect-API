@@ -16,6 +16,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Fonction d'envoi d'email de Bienvenue
 export const welcomeEmail = (toEmail) => {
   const mailOptions = {
     from: myEmail,
@@ -26,7 +27,7 @@ export const welcomeEmail = (toEmail) => {
 
   return transporter.sendMail(mailOptions);
 };
-
+// Fonction d'envoi d'email pour le code
 export const codeEmail = (toEmail, code) => {
   const mailOptions = {
     from: myEmail,
