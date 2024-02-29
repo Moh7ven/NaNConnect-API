@@ -6,11 +6,11 @@ import {
   getNanienConnected,
   getAllNaniens,
 } from "../Controllers/naniensController.js";
+import upload from "../middleware/multer-config.js";
 import authNaniens from "../middleware/authNaniens.js";
 import checkEmail from "../middleware/checkEmail.js";
 
 const router = express.Router();
-const upload = multer();
 
 /**
  * @swagger
@@ -54,7 +54,7 @@ const upload = multer();
  *       500:
  *         description: Erreur interne du serveur.
  */
-router.post("/signupnaniens", upload.any(), signupNanien);
+router.post("/signupnaniens", upload, signupNanien);
 
 /**
  * @swagger
@@ -82,7 +82,7 @@ router.post("/signupnaniens", upload.any(), signupNanien);
  *       500:
  *         description: Erreur interne du serveur.
  */
-router.post("/loginnaniens", upload.any(), loginNanien);
+router.post("/loginnaniens", upload, loginNanien);
 
 /**
  * @swagger
