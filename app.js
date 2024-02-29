@@ -8,11 +8,16 @@ import theDate from "./utils/generateDate.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./swaggerConfig.js";
 import publicationsRoutes from "./routes/publicationsRoutes.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
 connectDB();
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /* app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -39,4 +44,5 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/naniens", userRoutes);
 app.use("/api/naniens/confirmation-email", confirmationEmailRoutes);
 app.use("/api/naniens/publications", publicationsRoutes);
+app.use("/assets", express.static(path.join(__dirname, "assets")));
 export default app;

@@ -25,6 +25,7 @@ export const signupNanien = (req, res) => {
         adresseNanien: req.body.adresseNanien,
         telNanien: req.body.telNanien,
         createdAtNanien: theDate(),
+        pictureNanien: req.body.pictureNanien,
       });
 
       nanien
@@ -108,13 +109,15 @@ export const getAllNaniens = (req, res) => {
 
 //FONCTION POUR RECUPÉRER LES INFOS DE L'UTILISTEUR CONNECTÉ
 export const getNanienConnected = (req, res) => {
-  Naniens.findOne({ _id: req.auth.nanienId }).then((nanien) => {
-    if (!nanien) {
-      return res.status(401).json({ message: "Utilisateur non-connecté" });
-    }
-    const { nomNanien, prenomNanien, emailNanien, nanienUsername } = nanien;
-    res
-      .status(200)
-      .json({ nomNanien, prenomNanien, emailNanien, nanienUsername });
-  }).catch((error) => res.status(400).json({ error }));
+  Naniens.findOne({ _id: req.auth.nanienId })
+    .then((nanien) => {
+      if (!nanien) {
+        return res.status(401).json({ message: "Utilisateur non-connecté" });
+      }
+      const { nomNanien, prenomNanien, emailNanien, nanienUsername } = nanien;
+      res
+        .status(200)
+        .json({ nomNanien, prenomNanien, emailNanien, nanienUsername });
+    })
+    .catch((error) => res.status(400).json({ error }));
 };
