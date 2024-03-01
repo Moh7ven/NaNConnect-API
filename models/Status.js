@@ -5,6 +5,7 @@ const statusSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  
 });
 
 export default statusSchema = mongooseModel("Status", statusSchema);
