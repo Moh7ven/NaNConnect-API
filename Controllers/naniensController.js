@@ -25,14 +25,16 @@ export const signupNanien = (req, res) => {
         adresseNanien: req.body.adresseNanien,
         telNanien: req.body.telNanien,
         createdAtNanien: theDate(),
-        pictureNanien: req.body.pictureNanien,
+        image: `${req.protocol}://${req.get("host")}/assets/${
+          req.files.image[0].filename
+        }`,
       });
 
       nanien
         .save()
         .then(() => {
           res.status(200).json({
-            message: `Bravo, vous avez été bien enregistré`,
+            message: `Bravo, vous avez été bien enregistré, Vous recevrez un email à l'adresse ${req.body.emailNanien} pour confirmer votre compte.`,
           });
 
           const confirmationEmail = new ConfirmationEmail({
