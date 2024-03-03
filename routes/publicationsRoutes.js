@@ -2,7 +2,14 @@ import express from "express";
 import multer from "multer";
 import authNaniens from "../middleware/authNaniens.js";
 
-import { addPublication } from "../Controllers/publicationsController.js";
+import {
+  addPublication,
+  deletePublication,
+  getAllNaniensPublications,
+  getAllPublications,
+  getOnePublication,
+} from "../Controllers/publicationsController.js";
+import { getAllNaniens } from "../Controllers/naniensController.js";
 
 const router = express.Router();
 const upload = multer();
@@ -40,5 +47,17 @@ const upload = multer();
  */
 
 router.post("/add-publication", authNaniens, upload.any(), addPublication);
+
+router.get("/get-one-publication/:id", authNaniens, getOnePublication);
+
+router.get(
+  "/user-connected-publications",
+  authNaniens,
+  getAllNaniensPublications
+);
+
+router.get("/all-publications", getAllPublications);
+
+router.delete("/delete-publication/:id", authNaniens, deletePublication);
 
 export default router;

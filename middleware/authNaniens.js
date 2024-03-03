@@ -18,6 +18,10 @@ export default (req, res, next) => {
       next();
     } */
   } catch (error) {
-    res.status(401).json({ error: error });
+    res.status(401).json({
+      error: error,
+      message:
+        "Une erreur est survenue lors de la vérification du token. Veuillez vous reconnecter.",
+    });
   }
 };

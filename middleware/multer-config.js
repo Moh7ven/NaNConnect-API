@@ -15,10 +15,10 @@ const MIME_TYPES = {
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     // Liste des types de fichiers autorisés
-    const allowedFileTypes = ["image", "video"];
+    /* const allowedFileTypes = ["image", "video"]; */
 
     // Vérifie si le type de fichier est autorisé
-    if (allowedFileTypes.includes(file.fieldname)) {
+    if (file.fieldname === "image" || file.fieldname === "video") {
       // Si autorisé, définir le répertoire de destination
       callback(null, "./assets");
     } else {
