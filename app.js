@@ -8,6 +8,7 @@ import theDate from "./utils/generateDate.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./swaggerConfig.js";
 import publicationsRoutes from "./routes/publicationsRoutes.js";
+import commentairesRoutes from "./routes/commentaireRoute.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -44,5 +45,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/naniens", userRoutes);
 app.use("/api/naniens/confirmation-email", confirmationEmailRoutes);
 app.use("/api/naniens/publications", publicationsRoutes);
+app.use("/api/nanien/pubcomment", commentairesRoutes);
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 export default app;

@@ -7,7 +7,6 @@ const commentaireSchema = mongoose.Schema({
   createdAtCom: { type: String, required: true },
 });
 
-export default commentaireSchema = mongoose.model(
-  "Commentaires",
-  commentaireSchema
-);
+const Commentaires = mongoose.model("Commentaires", commentaireSchema);
+
+export default Commentaires;

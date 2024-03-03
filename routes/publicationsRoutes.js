@@ -33,6 +33,8 @@ const router = express.Router();
  *                 type: string
  *               imagePub:
  *                 type: string
+ *               videoPub:
+ *                 type: string
  *               modifPub:
  *                 type: string
  *               authorName:
