@@ -1,6 +1,7 @@
 import express from "express";
 import multer from "multer";
 import authNaniens from "../middleware/authNaniens.js";
+import upload from "../middleware/multer-config.js";
 
 import {
   addPublication,
@@ -12,7 +13,6 @@ import {
 import { getAllNaniens } from "../Controllers/naniensController.js";
 
 const router = express.Router();
-const upload = multer();
 
 /**
  * @swagger
@@ -46,7 +46,7 @@ const upload = multer();
  *         description: Erreur interne du serveur.
  */
 
-router.post("/add-publication", authNaniens, upload.any(), addPublication);
+router.post("/add-publication", authNaniens, upload, addPublication);
 
 router.get("/get-one-publication/:id", authNaniens, getOnePublication);
 

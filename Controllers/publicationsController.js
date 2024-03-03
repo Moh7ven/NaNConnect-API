@@ -3,17 +3,13 @@ import Naniens from "../models/Naniens.js";
 import theDate from "../utils/generateDate.js";
 
 export const addPublication = (req, res) => {
-  console.log("req.files:", req.files);
-  console.log('req.files["image"]:', req.files && req.files["image"]);
-  console.log('req.files["video"]:', req.files && req.files["video"]);
-
   Naniens.find({ _id: req.auth.nanienId })
     .then((nanien) => {
       if (!nanien) {
         return res.status(401).json({ message: "Utilisateur non-connecté" });
       }
 
-      //Verification des fichiers images et videos si rien n'est soumis par l'user alors il prend la valeur null
+      //Verification des fichiers images et videos si rien n'est pas soumis par l'user alors il prend la valeur null
       const imagePath =
         req.files && req.files["image"]
           ? `${req.protocol}://${req.get("host")}/assets/${
@@ -26,9 +22,6 @@ export const addPublication = (req, res) => {
               req.files["video"][0].filename
             }`
           : null;
-
-      console.log("imagePath:", imagePath);
-      console.log("videoPath:", videoPath);
 
       const publication = new Publications({
         idNanien: req.auth.nanienId,

@@ -46,8 +46,8 @@ const storage = multer.diskStorage({
 
 // Configuration du middleware Multer avec la configuration de stockage définie ci-dessus
 const upload = multer({ storage: storage }).fields([
-  { name: "image", maxCount: 1 }, // Maximum 1 fichier pour le champ "image"
-  { name: "video", maxCount: 1 }, // Maximum 1 fichier pour le champ "video"
+  { name: "image" },
+  { name: "video" },
 ]);
 
 // Exporte le middleware pour une utilisation dans d'autres parties de l'application
