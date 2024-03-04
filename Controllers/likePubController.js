@@ -1,4 +1,5 @@
-import LikePub from "../models/LikePub";
+import LikePub from "../models/LikePub.js";
+import theDate from "../utils/generateDate.js";
 
 //FONCTION POUR RECUPERER LES LIKES DE LA PUB
 export const getLikes = (req, res) => {
@@ -14,6 +15,7 @@ export const addLike = (req, res) => {
   const like = new LikePub({
     idPub: req.params.idPub,
     idNanien: req.auth.nanienId,
+    createdAt: theDate(),
   });
   like
     .save()
@@ -24,7 +26,7 @@ export const addLike = (req, res) => {
 };
 
 //FONCTION POUR SUPPRIMER UN LIKE
-export const deleteLike = (req, res) => {
+export const disLike = (req, res) => {
   LikePub.findOne({ idPub: req.params.idPub, idNanien: req.auth.nanienId })
     .then((like) => {
       if (!like) {
