@@ -9,6 +9,7 @@ import {
   getAllNaniensPublications,
   getAllPublications,
   getOnePublication,
+  getPublicationWithComments,
 } from "../Controllers/publicationsController.js";
 import { getAllNaniens } from "../Controllers/naniensController.js";
 
@@ -59,6 +60,8 @@ router.get(
 );
 
 router.get("/all-publications", getAllPublications);
+
+router.get("/publication-with-comments/:idPub", getPublicationWithComments);
 
 router.delete("/delete-publication/:id", authNaniens, deletePublication);
 

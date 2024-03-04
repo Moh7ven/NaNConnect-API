@@ -45,6 +45,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/naniens", userRoutes);
 app.use("/api/naniens/confirmation-email", confirmationEmailRoutes);
 app.use("/api/naniens/publications", publicationsRoutes);
-app.use("/api/nanien/pubcomment", commentairesRoutes);
+app.use("/api/naniens/pubcomment", commentairesRoutes);
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 export default app;

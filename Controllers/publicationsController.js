@@ -1,4 +1,5 @@
 import Publications from "../models/Publications.js";
+import Commentaires from "../models/Commentaires.js";
 import Naniens from "../models/Naniens.js";
 import theDate from "../utils/generateDate.js";
 
@@ -66,6 +67,22 @@ export const getAllPublications = (req, res) => {
       res.status(200).json(publications);
     })
     .catch((error) => res.status(400).json({ error }));
+};
+
+export const getPublicationWithComments = (req, res) => {
+  Publications.findById(req.params.idPub)
+    .then((publication) => {
+      Commentaires.find({ idPub: req.params.idPub })
+        .then((commentaires) => {
+          res.status(200).json({ publication, commentaires });
+        })
+        .catch((error) => {
+          res.status(400).json({ error: "Erreur lors de la récupération des commentaires." });
+        });
+    })
+    .catch((error) => {
+      res.status(400).json({ error: "Erreur lors de la récupération de la publication." });
+    });
 };
 
 export const deletePublication = (req, res) => {
