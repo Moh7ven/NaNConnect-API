@@ -4,7 +4,7 @@ import {
   getAllCommentaires,
   getCommentairesFromPublication,
   getOneCommentaires,
-} from "../controllers/commentairesController.js";
+} from "../Controllers/commentairesController.js";
 import express from "express";
 import authNaniens from "../middleware/authNaniens.js";
 import multer from "multer";
