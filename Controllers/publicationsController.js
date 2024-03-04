@@ -77,11 +77,15 @@ export const getPublicationWithComments = (req, res) => {
           res.status(200).json({ publication, commentaires });
         })
         .catch((error) => {
-          res.status(400).json({ error: "Erreur lors de la récupération des commentaires." });
+          res.status(400).json({
+            error: "Erreur lors de la récupération des commentaires.",
+          });
         });
     })
     .catch((error) => {
-      res.status(400).json({ error: "Erreur lors de la récupération de la publication." });
+      res
+        .status(400)
+        .json({ error: "Erreur lors de la récupération de la publication." });
     });
 };
 
@@ -96,6 +100,17 @@ export const deletePublication = (req, res) => {
         Publications.deleteOne({ _id: req.params.id })
           .then(() => {
             res.status(200).json({ message: "Publication supprimée !" });
+
+            // Supprimer les commentaires lieés à la publication supprimée
+            Commentaires.deleteMany({ idPub: req.params.id })
+              .then(() => {
+                res.status(200).json({ message: "Commentaires supprimés !" });
+              })
+              .catch((error) =>
+                res.status(500).json({
+                  error: "Erreur lors de la suppression des commentaires.",
+                })
+              );
           })
           .catch((error) => res.status(500).json({ error }));
       }
