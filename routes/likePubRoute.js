@@ -6,10 +6,10 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/publications/get-all-likes-pub/{idPub}:
- *   description: Affichage des likes d'une publication.
+ * /api/publications/add-all-likes-pub/{idPub}:
+ *   description: Ajout des likes d'une publication.
  *   get:
- *     summary: Affichage des likes d'une publication.
+ *     summary: Ajout des likes d'une publication.
  *     parameters:
  *       - in: path
  *         name: idPub
