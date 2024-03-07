@@ -8,7 +8,6 @@ const notificationsSchema = mongoose.Schema({
   read: { type: Boolean, default: false },
 });
 
-export default notificationsSchema = mongoose.model(
-  "Notifications",
-  notificationsSchema
-);
+const Notifications = mongoose.model("Notifications", notificationsSchema);
+
+export default Notifications;
