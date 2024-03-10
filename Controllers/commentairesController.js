@@ -1,4 +1,5 @@
 import Commentaires from "../models/Commentaires.js";
+import Publication from "../models/Publications.js";
 import Naniens from "../models/Naniens.js";
 import theDate from "../utils/generateDate.js";
 
@@ -7,21 +8,31 @@ export const addCommentaires = (req, res) => {
     if (!nanien) {
       return res.status(401).json({ message: "Utilisateur non-connecté" });
     }
-    const commentaires = new Commentaires({
-      idNanien: req.auth.nanienId,
-      idPub: req.params.idPub,
-      contenuComment: req.body.contenuComment,
-      authorName: `${nanien[0].nomNanien} ${nanien[0].prenomNanien}`,
-      authorUsername: nanien[0].nanienUsername,
-      createdAtCom: theDate(),
-    });
 
-    commentaires
-      .save()
-      .then(() => {
-        res.status(200).json({ message: "Commentaire ajouter !" });
+    Publication.findOne({ _id: req.params.idPub })
+      .then((publication) => {
+        //Ici, je verifie si la publication existe
+        if (!publication) {
+          return res.status(404).json({ message: "Publication non trouvée" });
+        }
+
+        const commentaires = new Commentaires({
+          idNanien: req.auth.nanienId,
+          idPub: req.params.idPub,
+          contenuComment: req.body.contenuComment,
+          authorName: `${nanien[0].nomNanien} ${nanien[0].prenomNanien}`,
+          authorUsername: nanien[0].nanienUsername,
+          createdAtCom: theDate(),
+        });
+
+        commentaires
+          .save()
+          .then(() => {
+            res.status(200).json({ message: "Commentaire ajouter !" });
+          })
+          .catch((error) => res.status(400).json({ error }));
       })
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => res.status(500).json({ error }));
   });
 };
 
@@ -72,11 +83,9 @@ export const deleteCommentaires = (req, res) => {
         Publications.findOne({ _id: commentaire.idPub, idNanien: nanienId })
           .then((publication) => {
             if (!publication) {
-              return res
-                .status(403)
-                .json({
-                  error: "Accès non autorisé à la suppression du commentaire.",
-                });
+              return res.status(403).json({
+                error: "Accès non autorisé à la suppression du commentaire.",
+              });
             }
 
             // Si l'utilisateur est l'auteur de la publication, supprimer le commentaire
@@ -87,20 +96,16 @@ export const deleteCommentaires = (req, res) => {
                   .json({ message: "Commentaire supprimé avec succès !" });
               })
               .catch((error) =>
-                res
-                  .status(500)
-                  .json({
-                    error: "Erreur lors de la suppression du commentaire.",
-                  })
+                res.status(500).json({
+                  error: "Erreur lors de la suppression du commentaire.",
+                })
               );
           })
           .catch((error) =>
-            res
-              .status(500)
-              .json({
-                error:
-                  "Erreur lors de la vérification de l'accès à la publication.",
-              })
+            res.status(500).json({
+              error:
+                "Erreur lors de la vérification de l'accès à la publication.",
+            })
           );
       }
     })
