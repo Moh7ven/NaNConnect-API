@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 import authNaniens from "../middleware/authNaniens.js";
 import upload from "../middleware/multer-config.js";
 

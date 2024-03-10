@@ -99,12 +99,11 @@ export const deletePublication = (req, res) => {
       } else {
         Publications.deleteOne({ _id: req.params.id })
           .then(() => {
-            res.status(200).json({ message: "Publication supprimée !" });
-
             // Supprimer les commentaires lieés à la publication supprimée
+            
             Commentaires.deleteMany({ idPub: req.params.id })
               .then(() => {
-                res.status(200).json({ message: "Commentaires supprimés !" });
+                res.status(200).json({ message: "Publications supprimées !" });
               })
               .catch((error) =>
                 res.status(500).json({
