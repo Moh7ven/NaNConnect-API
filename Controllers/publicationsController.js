@@ -2,6 +2,7 @@ import Publications from "../models/Publications.js";
 import Commentaires from "../models/Commentaires.js";
 import Naniens from "../models/Naniens.js";
 import theDate from "../utils/generateDate.js";
+import fs from "fs/promises";
 
 export const addPublication = (req, res) => {
   Naniens.find({ _id: req.auth.nanienId })
@@ -89,30 +90,82 @@ export const getPublicationWithComments = (req, res) => {
     });
 };
 
-export const deletePublication = (req, res) => {
-  Publications.findOne({ _id: req.params.id })
-    .then((pub) => {
-      if (pub.idNanien != req.auth.nanienId) {
-        return res.status(401).json({
-          message: "Vous n'êtes pas autorisé a supprimer cette publication",
-        });
-      } else {
-        Publications.deleteOne({ _id: req.params.id })
-          .then(() => {
-            // Supprimer les commentaires lieés à la publication supprimée
-            
-            Commentaires.deleteMany({ idPub: req.params.id })
-              .then(() => {
-                res.status(200).json({ message: "Publications supprimées !" });
-              })
-              .catch((error) =>
-                res.status(500).json({
-                  error: "Erreur lors de la suppression des commentaires.",
-                })
-              );
-          })
-          .catch((error) => res.status(500).json({ error }));
+export const deletePublication = async (req, res) => {
+  try {
+    // Trouver la publication à supprimer
+    const pub = await Publications.findOne({ _id: req.params.id });
+
+    // Vérifier si la publication existe
+    if (!pub) {
+      return res.status(404).json({ message: "Publication non trouvée" });
+    }
+
+    // Vérifier si l'utilisateur est autorisé à supprimer cette publication
+    if (pub.idNanien !== req.auth.nanienId) {
+      return res.status(401).json({
+        message: "Vous n'êtes pas autorisé à supprimer cette publication",
+      });
+    }
+
+    // Extraire les noms de fichiers des images à supprimer
+    const filenamesImage =
+      pub.image && pub.image.length > 0
+        ? pub.image.map((file) => file.split("/assets/")[1])
+        : [];
+
+    // Extraire les noms de fichiers des vidéos à supprimer
+    const filenamesVideo =
+      pub.video && pub.video.length > 0
+        ? pub.video.map((file) => file.split("/assets/")[1])
+        : [];
+
+    // Supprimer la publication de la base de données
+    await Publications.deleteOne({ _id: req.params.id });
+
+    // Supprimer les commentaires liés à la publication
+    await Commentaires.deleteMany({ idPub: req.params.id });
+
+    // Fonction pour supprimer les fichiers
+    const deleteFiles = async (filenames, type) => {
+      const results = [];
+
+      for (const filename of filenames) {
+        if (filename) {
+          try {
+            // Supprimer le fichier du dossier 'assets'
+            await fs.unlink(`./assets/${filename}`);
+            results.push(`${type} ${filename} supprimé(e) !`);
+          } catch (err) {
+            console.log(err);
+            results.push(
+              `Erreur lors de la suppression de ${type} ${filename}`
+            );
+          }
+        }
       }
-    })
-    .catch((error) => res.status(500).json({ error }));
+
+      return results;
+    };
+
+    // Supprimer les images
+    const imageResults = await deleteFiles(filenamesImage, "image");
+
+    // Supprimer les vidéos
+    const videoResults = await deleteFiles(filenamesVideo, "vidéo");
+
+    // Répondre avec un message indiquant les éléments supprimés
+    /* res.status(200).json({
+      message:
+        "Publication, commentaires, " +
+        imageResults.join(" ") +
+        " " +
+        videoResults.join(" "),
+    }); */
+    res.status(200).json({
+      message: "Publication supprimée avec success !",
+    });
+  } catch (error) {
+    // En cas d'erreur, renvoyer une réponse avec le message d'erreur
+    res.status(500).json({ error: error.message });
+  }
 };
