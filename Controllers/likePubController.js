@@ -10,6 +10,9 @@ export const getLikes = (req, res) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
+//
+
+
 //FONCTION POUR AJOUTER UN LIKE
 export const addLike = (req, res) => {
   const like = new LikePub({
@@ -17,12 +20,22 @@ export const addLike = (req, res) => {
     idNanien: req.auth.nanienId,
     createdAt: theDate(),
   });
-  like
-    .save()
-    .then(() => {
-      res.status(200).json({ message: "Like ajouter !" });
-    })
-    .catch((error) => res.status(400).json({ error }));
+
+  LikePub.findOne({
+    idPub: req.params.idPub,
+    idNanien: req.auth.nanienId,
+  }).then((likes) => {
+    if (likes) {
+      return res.status(401).json({ message: "Like existant !" });
+    }
+
+    like
+      .save()
+      .then(() => {
+        res.status(200).json({ message: "Like ajouter !" });
+      })
+      .catch((error) => res.status(400).json({ error }));
+  });
 };
 
 //FONCTION POUR SUPPRIMER UN LIKE

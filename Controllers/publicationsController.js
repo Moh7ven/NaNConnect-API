@@ -1,5 +1,6 @@
 import Publications from "../models/Publications.js";
 import Commentaires from "../models/Commentaires.js";
+import LikePub from "../models/LikePub.js";
 import Naniens from "../models/Naniens.js";
 import theDate from "../utils/generateDate.js";
 import fs from "fs/promises";
@@ -70,12 +71,20 @@ export const getAllPublications = (req, res) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-export const getPublicationWithComments = (req, res) => {
+export const getPublicationWithCommentsAndLikes = (req, res) => {
   Publications.findById(req.params.idPub)
     .then((publication) => {
       Commentaires.find({ idPub: req.params.idPub })
         .then((commentaires) => {
-          res.status(200).json({ publication, commentaires });
+          LikePub.find({ idPub: req.params.idPub })
+            .then((likes) => {
+              res.status(200).json({ publication, commentaires, likes });
+            })
+            .catch((error) => {
+              res
+                .status(400)
+                .json({ error: "Erreur lors de la sélection des likes." });
+            });
         })
         .catch((error) => {
           res.status(400).json({

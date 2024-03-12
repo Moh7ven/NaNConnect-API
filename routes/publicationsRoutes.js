@@ -9,9 +9,8 @@ import {
   getAllNaniensPublications,
   getAllPublications,
   getOnePublication,
-  getPublicationWithComments,
+  getPublicationWithCommentsAndLikes,
 } from "../Controllers/publicationsController.js";
-import { getAllNaniens } from "../Controllers/naniensController.js";
 
 const router = express.Router();
 
@@ -142,7 +141,10 @@ router.get("/all-publications", getAllPublications);
  *         description: Erreur interne du serveur.
  */
 
-router.get("/publication-with-comments/:idPub", getPublicationWithComments);
+router.get(
+  "/publication-with-comments-and-likes/:idPub",
+  getPublicationWithCommentsAndLikes
+);
 
 /**
  * @swagger
