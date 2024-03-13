@@ -121,22 +121,22 @@ router.get("/all-publications", getAllPublications);
 
 /**
  * @swagger
- * /api/publications/delete-publication/{id}:
- *   description: Suppression d'une publication.
- *   delete:
- *     summary: Suppression d'une publication.
+ * /api/publications/publication-with-comments-and-likes/{idPub}:
+ *   description: Affichage d'une publication avec les commentaires et les likes.
+ *   get:
+ *     summary: Affichage d'une publication avec les commentaires et les likes.
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: idPub
  *         schema:
  *           type: string
  *         required: true
  *         description: L'id de la publication.
  *     responses:
  *       200:
- *         description: Publication supprimée avec success !
+ *         description: Publication affichée avec success !
  *       400:
- *         description: Erreur lors de la suppression de la publication.
+ *         description: Erreur lors de l'affichage de la publication.
  *       500:
  *         description: Erreur interne du serveur.
  */

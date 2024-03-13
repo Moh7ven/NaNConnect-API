@@ -56,6 +56,27 @@ router.post("/add-like-pub/:idPub", authNaniens, addLike);
 
 router.get("/get-all-likes-pub/:idPub", authNaniens, getLikes);
 
+/**
+ * @swagger
+ * /api/publications/dislike-pub/{idPub}:
+ *   description: Suppression d'un like d'une publication.
+ *   delete:
+ *     summary: Suppression d'un like d'une publication.
+ *     parameters:
+ *       - in: path
+ *         name: idPub
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: L'id de la publication.
+ *     responses:
+ *       200:
+ *         description: Like supprimé avec success !
+ *       400:
+ *         description: Erreur lors de la suppression du like.
+ *       500:
+ *         description: Erreur interne du serveur.
+ */
 router.delete("/dislike-pub/:idPub", authNaniens, disLike);
 
 export default router;

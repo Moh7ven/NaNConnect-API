@@ -1,5 +1,3 @@
-//file of notifications controller
-
 import Notifications from "../models/Notifications.js";
 
 export const getNotifications = async (req, res) => {
