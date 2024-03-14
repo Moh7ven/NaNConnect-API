@@ -51,18 +51,21 @@ export const addPublication = (req, res) => {
     );
 };
 
+//Fonction pour récupérer une publication
 export const getOnePublication = (req, res) => {
   Publications.findOne({ _id: req.params.id })
     .then((publication) => res.status(200).json(publication))
     .catch((error) => res.status(400).json({ error }));
 };
 
+//Fonction pour récupérer toutes les publications d'un nanien
 export const getAllNaniensPublications = (req, res) => {
   Publications.find({ idNanien: req.auth.nanienId })
     .then((pubs) => res.status(200).json(pubs))
     .catch((error) => res.status(400).json({ error }));
 };
 
+//Fonction pour récupérer toutes les publications
 export const getAllPublications = (req, res) => {
   Publications.find()
     .then((publications) => {
