@@ -1,5 +1,6 @@
 import Notifications from "../models/Notifications.js";
 
+//Fonction pour recupérer toutes les notifications
 export const getNotifications = async (req, res) => {
   try {
     const notifications = await Notifications.find({
