@@ -10,6 +10,7 @@ import swaggerSpec from "./swaggerConfig.js";
 import publicationsRoutes from "./routes/publicationsRoutes.js";
 import commentairesRoutes from "./routes/commentaireRoute.js";
 import likePubRoutes from "./routes/likePubRoute.js";
+import notificationsRoutes from "./routes/notificationsRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -48,5 +49,6 @@ app.use("/api/naniens/confirmation-email", confirmationEmailRoutes);
 app.use("/api/naniens/publications", publicationsRoutes);
 app.use("/api/naniens/pubcomment", commentairesRoutes);
 app.use("/api/naniens/likepub", likePubRoutes);
+app.use("/api/naniens/notifications", notificationsRoutes);
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 export default app;
