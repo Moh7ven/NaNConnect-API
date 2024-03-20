@@ -2,11 +2,26 @@ import Naniens from "../models/Naniens.js";
 import Publication from "../models/Publications.js";
 import Search from "../models/Search.js";
 
-export const makeSearch = (req, res) => {
-  console.log(req.body);
-  console.log(req.body.terms);
+export const makeSearch = async (req, res) => {
   const { terms } = req.body;
   const userId = req.params.userId;
+
+  const nanien = await Naniens.find({
+    $or: [
+      { nomNanien: { $regex: terms, $options: "i" } },
+      { prenomNanien: { $regex: terms, $options: "i" } },
+      { nanienUsername: { $regex: terms, $options: "i" } },
+      { matricule: { $regex: terms, $options: "i" } },
+    ],
+  });
+
+  const publication = await Publication.find({
+    $or: [
+      { libNanien: { $regex: terms, $options: "i" } },
+      { authorName: { $regex: terms, $options: "i" } },
+      { authorUsername: { $regex: terms, $options: "i" } },
+    ],
+  });
 
   const search = new Search({
     terms: terms,
@@ -16,7 +31,7 @@ export const makeSearch = (req, res) => {
   search
     .save()
     .then(() => {
-      res.status(201).json({ message: "Recherche ajouter !" });
+      res.status(201).json({ nanien, publication });
     })
     .catch((error) => res.status(400).json({ error }));
 };
