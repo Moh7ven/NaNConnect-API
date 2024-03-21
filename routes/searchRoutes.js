@@ -1,23 +1,23 @@
 import express from "express";
 import authNaniens from "../middleware/authNaniens.js";
 import {
-  getAllSearch,
-  getByUserConnetectedSearch,
+  getAllSearchHistory,
+  getByUserConnetectedSearchHistory,
   makeSearch,
 } from "../Controllers/searchController.js";
 import upload from "../middleware/multer-config.js";
 
 const router = express.Router();
 
-router.post("/make-search/:userId", authNaniens, upload, makeSearch);
+router.post("/make-search", authNaniens, upload, makeSearch);
 
-router.get("/get-all-search", authNaniens, upload, getAllSearch);
+router.get("/get-all-search-history", authNaniens, upload, getAllSearchHistory);
 
 router.get(
-  "/get-user-connected-search/:userId",
+  "/get-user-connected-search-history",
   authNaniens,
   upload,
-  getByUserConnetectedSearch
+  getByUserConnetectedSearchHistory
 );
 
 export default router;

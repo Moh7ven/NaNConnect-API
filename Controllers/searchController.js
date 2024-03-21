@@ -4,9 +4,9 @@ import Search from "../models/Search.js";
 
 export const makeSearch = async (req, res) => {
   const { terms } = req.body;
-  const userId = req.params.userId;
+  const nanienId = req.auth.nanienId;
 
-  const nanien = await Naniens.find({
+  const nanienResults = await Naniens.find({
     $or: [
       { nomNanien: { $regex: terms, $options: "i" } },
       { prenomNanien: { $regex: terms, $options: "i" } },
@@ -15,7 +15,7 @@ export const makeSearch = async (req, res) => {
     ],
   });
 
-  const publication = await Publication.find({
+  const publicationResults = await Publication.find({
     $or: [
       { libNanien: { $regex: terms, $options: "i" } },
       { authorName: { $regex: terms, $options: "i" } },
@@ -25,18 +25,20 @@ export const makeSearch = async (req, res) => {
 
   const search = new Search({
     terms: terms,
-    usersId: userId,
+    nanienId: nanienId,
   });
 
   search
     .save()
     .then(() => {
-      res.status(201).json({ nanien, publication });
+      res
+        .status(201)
+        .json({ nanien: nanienResults, publication: publicationResults });
     })
     .catch((error) => res.status(400).json({ error }));
 };
 
-export const getAllSearch = async (req, res) => {
+export const getAllSearchHistory = async (req, res) => {
   try {
     const search = await Search.find();
     res.status(200).json(search);
@@ -45,9 +47,9 @@ export const getAllSearch = async (req, res) => {
   }
 };
 
-export const getByUserConnetectedSearch = async (req, res) => {
+export const getByUserConnetectedSearchHistory = async (req, res) => {
   try {
-    const search = await Search.find({ usersId: req.params.userId });
+    const search = await Search.find({ nanienId: req.params.nanienId });
     res.status(200).json(search);
   } catch (error) {
     res.status(404).json({ message: error.message });
