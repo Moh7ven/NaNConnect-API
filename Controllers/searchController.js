@@ -55,3 +55,24 @@ export const getByUserConnetectedSearchHistory = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+
+export const deleteSearchHistory = async (req, res) => {
+  try {
+    const search = await Search.findOne({
+      _id: req.params.id,
+      nanienId: req.auth.nanienId,
+    });
+    if (!search) {
+      return res
+        .status(401)
+        .json({ message: "Cette recherche est inexistant !" });
+    }
+
+    await Search.deleteOne({ _id: search._id });
+    res.status(200).json({
+      message: `Historique de la recherche ${search.terms} supprimée !`,
+    });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};

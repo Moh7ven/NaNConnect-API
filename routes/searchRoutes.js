@@ -1,6 +1,7 @@
 import express from "express";
 import authNaniens from "../middleware/authNaniens.js";
 import {
+  deleteSearchHistory,
   getAllSearchHistory,
   getByUserConnetectedSearchHistory,
   makeSearch,
@@ -18,6 +19,13 @@ router.get(
   authNaniens,
   upload,
   getByUserConnetectedSearchHistory
+);
+
+router.delete(
+  "/delete-search-history/:id",
+  authNaniens,
+  upload,
+  deleteSearchHistory
 );
 
 export default router;
