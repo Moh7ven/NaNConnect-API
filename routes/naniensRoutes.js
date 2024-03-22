@@ -5,6 +5,7 @@ import {
   loginNanien,
   getNanienConnected,
   getAllNaniens,
+  updateProfile,
 } from "../Controllers/naniensController.js";
 import upload from "../middleware/multer-config.js";
 import authNaniens from "../middleware/authNaniens.js";
@@ -113,5 +114,7 @@ router.get("/allnaniens", authNaniens, getAllNaniens);
  *         description: Utilisateur non-connecté.
  */
 router.get("/nanienconnected", authNaniens, getNanienConnected);
+
+router.put("/update-profile", authNaniens, upload, updateProfile);
 
 export default router;

@@ -123,3 +123,32 @@ export const getNanienConnected = (req, res) => {
     })
     .catch((error) => res.status(400).json({ error }));
 };
+
+//FONCTION POUR MODIFIER LES INFOS DE L'UTILISATEUR
+export const updateProfile = (req, res) => {
+  const nanienObject = req.file
+    ? {
+        ...req.body,
+        image: `${req.protocol}://${req.get("host")}/assets/${
+          req.files.image[0].filename
+        }`,
+      }
+    : { ...req.body };
+
+  Naniens.findOne({ _id: req.auth.nanienId })
+    .then((nanien) => {
+      if (nanien._id != req.auth.nanienId) {
+        return res
+          .status(401)
+          .json({ message: "Vous n'est pas autorisé à modifier ce profil" });
+      } else {
+        Naniens.updateOne(
+          { _id: req.auth.nanienId },
+          { ...nanienObject, _id: req.auth.nanienId }
+        )
+          .then(() => res.status(200).json({ message: "Profil mis à jour" }))
+          .catch((error) => res.status(401).json({ error }));
+      }
+    })
+    .catch((error) => res.status(400).json({ error }));
+};
