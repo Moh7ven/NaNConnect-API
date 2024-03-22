@@ -115,6 +115,21 @@ router.get("/allnaniens", authNaniens, getAllNaniens);
  */
 router.get("/nanienconnected", authNaniens, getNanienConnected);
 
+/**
+ * @swagger
+ * /api/naniens/update-profile:
+ *  description: Mise à jour du profile de l'utilisateur.
+ *  put:
+ *    summary: Mise à jour du profile de l'utilisateur.
+ *    responses:
+ *      200:
+ *        description: Profil mis à jour.
+ *      401:
+ *        description: Vous n'est pas autorisé à modifier ce profil ou profil introuvable
+ *      500:
+ *        description: Erreur interne du serveur
+ */
+
 router.put("/update-profile", authNaniens, upload, updateProfile);
 
 export default router;
