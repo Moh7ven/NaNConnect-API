@@ -49,8 +49,16 @@ export const getAllSearchHistory = async (req, res) => {
 
 export const getByUserConnetectedSearchHistory = async (req, res) => {
   try {
-    const search = await Search.find({ nanienId: req.params.nanienId });
-    res.status(200).json(search);
+    const searches = await Search.find({ nanienId: req.auth.nanienId });
+    console.log(searches);
+
+    if (!searches || searches.length === 0) {
+      return res
+        .status(401)
+        .json({ message: "Aucun historique de recherche !" });
+    }
+    console.log(searches);
+    res.status(200).json(searches);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
