@@ -50,8 +50,52 @@ export const getAllCommentaires = (req, res) => {
 
 export const getOneCommentaires = (req, res) => {
   Commentaires.findOne({ _id: req.params.id })
-    .then((commentaires) => res.status(200).json(commentaires))
+    .then((commentaire) => {
+      if (!commentaire) {
+        return res.status(404).json({ message: "Commentaire non trouvé" });
+      }
+      res.status(200).json(commentaire);
+    })
+
     .catch((error) => res.status(400).json({ error }));
+};
+
+export const updateComment = (req, res) => {
+  const commentId = req.params.commentId;
+  const nanienId = req.auth.nanienId;
+  const { contenuComment } = req.body;
+
+  Commentaires.findOne({ _id: commentId })
+    .then((commentaire) => {
+      if (!commentaire) {
+        return res.status(404).json({ message: "Commentaire non trouvé !" });
+      }
+
+      if (commentaire.idNanien !== nanienId) {
+        return res.status(401).json({ message: "Vous n'etes pas autorisé !" });
+      }
+
+      if (commentaire.modifCom === true) {
+        return res.status(401).json({
+          message: "Impossible de modifier ce commentaire plus d'une fois !",
+        });
+      }
+
+      // Mettre à jour le commentaire
+      Commentaires.updateOne(
+        { _id: commentId },
+        { contenuComment, createdAtCom: theDate(), modifCom: true }
+      )
+        .then(() => {
+          res.status(200).json({ message: "Commentaire mis à jour !" });
+        })
+        .catch((error) => {
+          res
+            .status(500)
+            .json({ error: "Erreur lors de la mise à jour du commentaire." });
+        });
+    })
+    .catch();
 };
 
 export const deleteCommentaires = (req, res) => {
@@ -80,7 +124,7 @@ export const deleteCommentaires = (req, res) => {
           );
       } else {
         // Sinon, vérifier si l'utilisateur est l'auteur de la publication associée au commentaire
-        Publications.findOne({ _id: commentaire.idPub, idNanien: nanienId })
+        Publication.findOne({ _id: commentaire.idPub, idNanien: nanienId })
           .then((publication) => {
             if (!publication) {
               return res.status(403).json({

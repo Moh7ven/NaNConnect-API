@@ -4,6 +4,7 @@ import {
   getAllCommentaires,
   getCommentairesFromPublication,
   getOneCommentaires,
+  updateComment,
 } from "../Controllers/commentairesController.js";
 import express from "express";
 import authNaniens from "../middleware/authNaniens.js";
@@ -118,6 +119,8 @@ router.get("/all-comments", authNaniens, getAllCommentaires);
  */
 
 router.get("/get-one-comment/:id", authNaniens, getOneCommentaires);
+
+router.put("/update-comment/:commentId", authNaniens, upload.any(), updateComment);
 
 /**
  * @swagger

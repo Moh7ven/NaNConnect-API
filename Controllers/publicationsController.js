@@ -102,6 +102,12 @@ export const getPublicationWithCommentsAndLikes = (req, res) => {
     });
 };
 
+export const updatePublication = (req, res) => {
+  const publicationId = req.params.id;
+  const nanienId = req.auth.nanienId;
+  const { libPub, modifPub } = req.body;
+};
+
 export const deletePublication = async (req, res) => {
   try {
     // Trouver la publication à supprimer
