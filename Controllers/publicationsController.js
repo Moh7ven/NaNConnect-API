@@ -102,11 +102,22 @@ export const getPublicationWithCommentsAndLikes = (req, res) => {
     });
 };
 
-export const updatePublication = (req, res) => {
+/* export const updatePublication = (req, res) => {
   const publicationId = req.params.id;
   const nanienId = req.auth.nanienId;
-  const { libPub, modifPub } = req.body;
-};
+  const pubOject = req.file ? {
+    ...req.body,
+    image: `${req.protocol}://${req.get("host")}/assets/${
+          req.files.image[0].filename
+        }`,
+    video: `${req.protocol}://${req.get("host")}/assets/${
+          req.files.video[0].filename
+        }`,
+  }
+
+
+
+}; */
 
 export const deletePublication = async (req, res) => {
   try {

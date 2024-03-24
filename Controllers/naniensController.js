@@ -116,10 +116,11 @@ export const getNanienConnected = (req, res) => {
       if (!nanien) {
         return res.status(401).json({ message: "Utilisateur non-connecté" });
       }
-      const { nomNanien, prenomNanien, emailNanien, nanienUsername } = nanien;
+      const { nomNanien, prenomNanien, emailNanien, nanienUsername, image } =
+        nanien;
       res
         .status(200)
-        .json({ nomNanien, prenomNanien, emailNanien, nanienUsername });
+        .json({ nomNanien, prenomNanien, emailNanien, nanienUsername, image });
     })
     .catch((error) => res.status(400).json({ error }));
 };
