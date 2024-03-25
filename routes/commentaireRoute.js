@@ -120,6 +120,36 @@ router.get("/all-comments", authNaniens, getAllCommentaires);
 
 router.get("/get-one-comment/:id", authNaniens, getOneCommentaires);
 
+/**
+ * @swagger
+ * /api/naniens/update-comment/{commentId}:
+ *   description: Mise à jour d'un commentaire.
+ *   put:
+ *     summary: Mise à jour d'un commentaire.
+ *     parameters:
+ *       - in: path
+ *         name: commentId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: L'id du commentaire.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               contenuComment:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Commentaire mis à jour avec success !
+ *       400:
+ *         description: Erreur lors de la mise à jour du commentaire.
+ *       500:
+ *         description: Erreur interne du serveur.
+ */
 router.put("/update-comment/:commentId", authNaniens, upload.any(), updateComment);
 
 /**
