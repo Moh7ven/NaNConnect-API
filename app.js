@@ -1,4 +1,5 @@
 import express from "express";
+import useragent from "express-useragent";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
@@ -39,6 +40,29 @@ const __dirname = path.dirname(__filename);
 app.use(cors());
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Middleware pour récupérer l'adresse IP de la requête
+app.use((req, res, next) => {
+  const ip =
+    req.ip ||
+    req.remoteAddress ||
+    req.socket.remoteAddress ||
+    req.socket.remoteAddress;
+  req.ipAddress = ip;
+
+  console.log(`IP de la requête: ${ip}`);
+  next();
+});
+
+app.use(useragent.express());
+
+// Middleware pour ajouter les informations de l'utilisateur
+app.use((req, res, next) => {
+  req.useragent = useragent.parse(req.headers["user-agent"]);
+  console.log(req.useragent);
+
+  next();
+});
 
 console.log(theDate());
 
