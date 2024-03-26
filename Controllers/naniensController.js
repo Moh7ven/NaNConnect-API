@@ -10,62 +10,82 @@ const code = generateRandomCode();
 
 //FONCTION POUR S'INSCRIRE
 export const signupNanien = (req, res) => {
-  bcrypt
-    .hash(req.body.passwordNanien, 10)
-    .then((hash) => {
-      const nanien = new Naniens({
-        nomNanien: req.body.nomNanien,
-        prenomNanien: req.body.prenomNanien,
-        nanienUsername: req.body.nanienUsername,
-        emailNanien: req.body.emailNanien,
-        passwordNanien: hash,
-        dateNaissNanien: req.body.dateNaissNanien,
-        promotionNanien: req.body.promotionNanien,
-        matricule: req.body.matricule,
-        adresseNanien: req.body.adresseNanien,
-        telNanien: req.body.telNanien,
-        createdAtNanien: theDate(),
-        image: `${req.protocol}://${req.get("host")}/assets/${
-          req.files.image[0].filename
-        }`,
+  // Vérification si l'utilisateur existe déjà
+  Naniens.findOne({
+    $or: [
+      { nanienUsername: req.body.nanienUsername },
+      { emailNanien: req.body.emailNanien },
+    ],
+  }).then((existingUser) => {
+    if (existingUser) {
+      // L'utilisateur existe déjà
+      return res.status(401).json({
+        message: "Utilisateur Existant !",
+        error: "Utilisateur existant",
       });
-
-      nanien
-        .save()
-        .then(() => {
-          res.status(200).json({
-            message: `Bravo, vous avez été bien enregistré, Vous recevrez un email à l'adresse ${req.body.emailNanien} pour confirmer votre compte.`,
+    } else {
+      bcrypt
+        .hash(req.body.passwordNanien, 10)
+        .then((hash) => {
+          const nanien = new Naniens({
+            nomNanien: req.body.nomNanien,
+            prenomNanien: req.body.prenomNanien,
+            nanienUsername: req.body.nanienUsername,
+            emailNanien: req.body.emailNanien,
+            passwordNanien: hash,
+            dateNaissNanien: req.body.dateNaissNanien,
+            promotionNanien: req.body.promotionNanien,
+            matricule: req.body.matricule,
+            adresseNanien: req.body.adresseNanien,
+            telNanien: req.body.telNanien,
+            createdAtNanien: theDate(),
+            image: `${req.protocol}://${req.get("host")}/assets/${
+              req.files.image[0].filename
+            }`,
           });
 
-          const confirmationEmail = new ConfirmationEmail({
-            email: req.body.emailNanien,
-            code: code,
-          });
+          /* if(nanien.nanienUsername === Naniens.nanienUsername){
+        return res.status(401).json({ message: "Utilisateur exist" });
+      } */
 
-          confirmationEmail
+          nanien
             .save()
             .then(() => {
-              console.log(`Email et code:  ${code} enregistrés`);
-            })
-            .catch((error) => {
-              console.error(error);
-            });
+              res.status(200).json({
+                message: `Bravo, vous avez été bien enregistré, Vous recevrez un email à l'adresse ${req.body.emailNanien} pour confirmer votre compte.`,
+              });
 
-          codeEmail(req.body.emailNanien, code)
-            .then((info) => {
-              console.log("Email envoyé : " + info.response);
+              const confirmationEmail = new ConfirmationEmail({
+                email: req.body.emailNanien,
+                code: code,
+              });
+
+              confirmationEmail
+                .save()
+                .then(() => {
+                  console.log(`Email et code:  ${code} enregistrés`);
+                })
+                .catch((error) => {
+                  console.error(error);
+                });
+
+              codeEmail(req.body.emailNanien, code)
+                .then((info) => {
+                  console.log("Email envoyé : " + info.response);
+                })
+                .catch((error) => {
+                  console.error(error);
+                });
             })
             .catch((error) => {
-              console.error(error);
+              res.status(400).json({ error });
             });
         })
         .catch((error) => {
-          res.status(400).json({ error });
+          res.status(500).json({ error });
         });
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
+    }
+  });
 };
 
 //FONCTION POUR SE CONNECTER
@@ -125,7 +145,7 @@ export const getNanienConnected = (req, res) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-//FONCTION POUR MODIFIER LES INFOS DE L'UTILISATEUR
+//FONCTION POUR MODIFIER LES INFOS DE L'nUTILISATEUR
 export const updateProfile = (req, res) => {
   const nanienObject = req.file
     ? {
