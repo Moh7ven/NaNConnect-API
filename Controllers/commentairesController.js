@@ -95,7 +95,11 @@ export const updateComment = (req, res) => {
             .json({ error: "Erreur lors de la mise à jour du commentaire." });
         });
     })
-    .catch();
+    .catch((error) => {
+      res
+        .status(500)
+        .json({ error: "Erreur lors de la mise à jour du commentaire." });
+    });
 };
 
 export const deleteCommentaires = (req, res) => {
