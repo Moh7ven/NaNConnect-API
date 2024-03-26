@@ -44,10 +44,6 @@ export const signupNanien = (req, res) => {
             }`,
           });
 
-          /* if(nanien.nanienUsername === Naniens.nanienUsername){
-        return res.status(401).json({ message: "Utilisateur exist" });
-      } */
-
           nanien
             .save()
             .then(() => {
