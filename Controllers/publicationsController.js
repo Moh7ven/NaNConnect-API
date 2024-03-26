@@ -102,23 +102,57 @@ export const getPublicationWithCommentsAndLikes = (req, res) => {
     });
 };
 
-/* export const updatePublication = (req, res) => {
+//Fonction pour modifier une publication
+export const updatePublication = (req, res) => {
   const publicationId = req.params.id;
   const nanienId = req.auth.nanienId;
-  const pubOject = req.file ? {
-    ...req.body,
-    image: `${req.protocol}://${req.get("host")}/assets/${
+  const pubOject = req.file
+    ? {
+        ...req.body,
+        image: `${req.protocol}://${req.get("host")}/assets/${
           req.files.image[0].filename
         }`,
-    video: `${req.protocol}://${req.get("host")}/assets/${
+        video: `${req.protocol}://${req.get("host")}/assets/${
           req.files.video[0].filename
         }`,
-  }
+      }
+    : { ...req.body };
 
+  Publications.findOne({ _id: publicationId })
+    .then((publication) => {
+      if (!publication) {
+        return res.status(404).json({ message: "Publication non trouvée" });
+      }
 
+      if (publication.idNanien !== nanienId) {
+        return res.status(401).json({
+          message: "Vous n'etes pas autorisé à modifier cette publication.",
+        });
+      }
 
-}; */
+      if (publication.modifPub === true) {
+        return res.status(401).json({
+          message: "Impossible de modifier cette publication plus d'une fois !",
+        });
+      }
 
+      // Mettre à jour la publication
+      Publications.updateOne(
+        { _id: publicationId },
+        { ...pubOject, createdAtPub: theDate(), modifPub: true }
+      )
+        .then(() => {
+          res.status(200).json({ message: "Publication mise à jour !" });
+        })
+        .catch((error) => {
+          res.status(400).json({ error });
+        });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+//Fonction pour supprimer une publication
 export const deletePublication = async (req, res) => {
   try {
     // Trouver la publication à supprimer

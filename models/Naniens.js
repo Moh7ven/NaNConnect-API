@@ -35,7 +35,7 @@ let nanienSchema = mongoose.Schema({
   },
   status: { type: Boolean, default: false },
   createdAtNanien: { type: String, required: true },
-  image: { type: String, required: true },
+  image: { type: String, required: false },
 });
 
 nanienSchema.plugin(uniqueValidator);

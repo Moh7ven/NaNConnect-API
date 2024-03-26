@@ -10,6 +10,7 @@ import {
   getAllPublications,
   getOnePublication,
   getPublicationWithCommentsAndLikes,
+  updatePublication,
 } from "../Controllers/publicationsController.js";
 
 const router = express.Router();
@@ -145,6 +146,8 @@ router.get(
   "/publication-with-comments-and-likes/:idPub",
   getPublicationWithCommentsAndLikes
 );
+
+router.put("/update-publication/:id", authNaniens, upload, updatePublication);
 
 /**
  * @swagger
