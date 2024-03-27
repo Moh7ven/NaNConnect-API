@@ -41,7 +41,7 @@ app.use(cors());
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Middleware pour récupérer l'adresse IP de la requête
+/* // Middleware pour récupérer l'adresse IP de la requête
 app.use((req, res, next) => {
   const ip =
     req.ip ||
@@ -62,7 +62,7 @@ app.use((req, res, next) => {
   console.log(req.useragent);
 
   next();
-});
+}); */
 
 console.log(theDate());
 

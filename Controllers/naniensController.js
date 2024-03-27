@@ -15,73 +15,92 @@ export const signupNanien = (req, res) => {
     $or: [
       { nanienUsername: req.body.nanienUsername },
       { emailNanien: req.body.emailNanien },
+      { telNanien: req.body.telNanien },
+      { matricule: req.body.matricule },
     ],
-  }).then((existingUser) => {
-    if (existingUser) {
-      // L'utilisateur existe déjà
-      return res.status(401).json({
-        message: "Utilisateur Existant !",
-        error: "Utilisateur existant",
-      });
-    } else {
-      bcrypt
-        .hash(req.body.passwordNanien, 10)
-        .then((hash) => {
-          const nanien = new Naniens({
-            nomNanien: req.body.nomNanien,
-            prenomNanien: req.body.prenomNanien,
-            nanienUsername: req.body.nanienUsername,
-            emailNanien: req.body.emailNanien,
-            passwordNanien: hash,
-            dateNaissNanien: req.body.dateNaissNanien,
-            promotionNanien: req.body.promotionNanien,
-            matricule: req.body.matricule,
-            adresseNanien: req.body.adresseNanien,
-            telNanien: req.body.telNanien,
-            createdAtNanien: theDate(),
-            image: `${req.protocol}://${req.get("host")}/assets/${
-              req.files.image[0].filename
-            }`,
-          });
-
-          nanien
-            .save()
-            .then(() => {
-              res.status(200).json({
-                message: `Bravo, vous avez été bien enregistré, Vous recevrez un email à l'adresse ${req.body.emailNanien} pour confirmer votre compte.`,
-              });
-
-              const confirmationEmail = new ConfirmationEmail({
-                email: req.body.emailNanien,
-                code: code,
-              });
-
-              confirmationEmail
-                .save()
-                .then(() => {
-                  console.log(`Email et code:  ${code} enregistrés`);
-                })
-                .catch((error) => {
-                  console.error(error);
-                });
-
-              codeEmail(req.body.emailNanien, code)
-                .then((info) => {
-                  console.log("Email envoyé : " + info.response);
-                })
-                .catch((error) => {
-                  console.error(error);
-                });
-            })
-            .catch((error) => {
-              res.status(400).json({ error });
-            });
-        })
-        .catch((error) => {
-          res.status(500).json({ error });
+  })
+    .then((existingUser) => {
+      if (existingUser) {
+        // L'utilisateur existe déjà
+        return res.status(401).json({
+          message: "Utilisateur Existant !",
+          error: "Utilisateur existant",
         });
-    }
-  });
+      } else {
+        bcrypt
+          .hash(req.body.passwordNanien, 10)
+          .then((hash) => {
+            const nanien = new Naniens({
+              nomNanien: req.body.nomNanien,
+              prenomNanien: req.body.prenomNanien,
+              nanienUsername: req.body.nanienUsername,
+              emailNanien: req.body.emailNanien,
+              passwordNanien: hash,
+              dateNaissNanien: req.body.dateNaissNanien,
+              promotionNanien: req.body.promotionNanien,
+              matricule: req.body.matricule,
+              adresseNanien: req.body.adresseNanien,
+              telNanien: req.body.telNanien,
+              createdAtNanien: theDate(),
+              image: `${req.protocol}://${req.get("host")}/assets/${
+                req.files.image[0].filename
+              }`,
+              socialNetworks: [
+                { facebook: req.body.facebook },
+                { twitter: req.body.twitter },
+                { instagram: req.body.instagram },
+                { linkedin: req.body.linkedin },
+                { github: req.body.github },
+                { gitlab: req.body.gitlab },
+                { portefolio: req.body.portefolio },
+                { figma: req.body.figma },
+              ],
+            });
+
+            nanien
+              .save()
+              .then(() => {
+                res.status(200).json({
+                  message: `Bravo, vous avez été bien enregistré, Vous recevrez un email à l'adresse ${req.body.emailNanien} pour confirmer votre compte.`,
+                });
+
+                const confirmationEmail = new ConfirmationEmail({
+                  email: req.body.emailNanien,
+                  code: code,
+                });
+
+                confirmationEmail
+                  .save()
+                  .then(() => {
+                    console.log(`Email et code:  ${code} enregistrés`);
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  });
+
+                codeEmail(req.body.emailNanien, code)
+                  .then((info) => {
+                    console.log("Email envoyé : " + info.response);
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  });
+              })
+              .catch((error) => {
+                console.error(error);
+                res.status(400).json({ error });
+              });
+          })
+          .catch((error) => {
+            console.log("ici");
+            console.error("Erreur lors hashage du mot de passe", error);
+            res.status(500).json({ error: "Erreur lors du hashage" });
+          });
+      }
+    })
+    .catch((error) => {
+      res.status.json({ error });
+    });
 };
 
 //FONCTION POUR SE CONNECTER

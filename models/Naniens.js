@@ -36,6 +36,18 @@ let nanienSchema = mongoose.Schema({
   status: { type: Boolean, default: false },
   createdAtNanien: { type: String, required: true },
   image: { type: String, required: false },
+  socialNetworks: [
+    {
+      facebook: { type: String, required: false },
+      twitter: { type: String, required: false },
+      instagram: { type: String, required: false },
+      linkedin: { type: String, required: false },
+      github: { type: String, required: false },
+      gitlab: { type: String, required: false },
+      portefolio: { type: String, required: false },
+      figma: { type: String, required: false },
+    },
+  ],
 });
 
 nanienSchema.plugin(uniqueValidator);
