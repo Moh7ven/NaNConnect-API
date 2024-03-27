@@ -1,3 +1,5 @@
+import Publication from "../models/Publications.js";
+import Naniens from "../models/Naniens.js";
 import LikePub from "../models/LikePub.js";
 import theDate from "../utils/generateDate.js";
 
@@ -12,30 +14,50 @@ export const getLikes = (req, res) => {
 
 //
 
-
 //FONCTION POUR AJOUTER UN LIKE
 export const addLike = (req, res) => {
-  const like = new LikePub({
-    idPub: req.params.idPub,
-    idNanien: req.auth.nanienId,
-    createdAt: theDate(),
-  });
+  Naniens.find({ _id: req.auth.nanienId })
+    .then((nanien) => {
+      if (!nanien) {
+        return res.status(401).json({ message: "Utilisateur non-connecté" });
+      }
 
-  LikePub.findOne({
-    idPub: req.params.idPub,
-    idNanien: req.auth.nanienId,
-  }).then((likes) => {
-    if (likes) {
-      return res.status(401).json({ message: "Like existant !" });
-    }
+      Publication.findOne({ _id: req.params.idPub })
+        .then((publication) => {
+          //Ici, je verifie si la publication existe
+          if (!publication) {
+            return res.status(404).json({ message: "Publication non trouvée" });
+          }
 
-    like
-      .save()
-      .then(() => {
-        res.status(200).json({ message: "Like ajouter !" });
-      })
-      .catch((error) => res.status(400).json({ error }));
-  });
+          const like = new LikePub({
+            idPub: req.params.idPub,
+            idNanien: req.auth.nanienId,
+            createdAt: theDate(),
+            authorName: `${nanien[0].nomNanien} ${nanien[0].prenomNanien}`,
+            authorUsername: nanien[0].nanienUsername,
+          });
+
+          LikePub.findOne({
+            idPub: req.params.idPub,
+            idNanien: req.auth.nanienId,
+          })
+            .then((likes) => {
+              if (likes) {
+                return res.status(401).json({ message: "Like existant !" });
+              }
+
+              like
+                .save()
+                .then(() => {
+                  res.status(200).json({ message: "Like ajouter !" });
+                })
+                .catch((error) => res.status(400).json({ error }));
+            })
+            .catch((error) => res.status(400).json({ error }));
+        })
+        .catch((error) => res.status(500).json({ error }));
+    })
+    .catch((error) => res.status(500).json({ error }));
 };
 
 //FONCTION POUR SUPPRIMER UN LIKE

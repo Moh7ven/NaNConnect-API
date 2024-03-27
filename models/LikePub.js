@@ -4,6 +4,8 @@ let LikePubSchema = mongoose.Schema({
   idPub: { type: String, required: true },
   idNanien: { type: String, required: true },
   createdAt: { type: String, required: true },
+  authorName: { type: String, required: true },
+  authorUsername: { type: String, required: true },
 });
 
 const LikePub = mongoose.model("LikePub", LikePubSchema);
